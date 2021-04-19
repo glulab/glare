@@ -15,7 +15,9 @@ class RegisterRoutesForLitstackRouteField
 
     public function run()
     {
-        \Ignite\Crud\Fields\Route::register('routes-for-menu', function($collection) {
+        $siteRoutes = config('site.litstack.site-routes');
+
+        \Ignite\Crud\Fields\Route::register('site-routes', function($collection) use ($siteRoutes) {
 
             $collection->group('Strona Główna', 'home', function($group) {
                 $group->route('Strona Główna', 'home', function() {
@@ -23,22 +25,20 @@ class RegisterRoutesForLitstackRouteField
                 });
             });
 
-            foreach (config('site.litstack.routes-for-menu') as $type => $typeConfig) {
-                $collection->group(trans("model-page.types.$type"), $type, function($group) use ($type, $typeConfig) {
-                    $items = \App\Models\Page::whereType($typeConfig['type'])->get();
+            foreach ($siteRoutes as $elementName => $elementRouteConfig) {
+                $items = \DB::table($elementRouteConfig['db-table'])->select(['id', 'title', 'slug', 'type'])->get();
+                $items = $items->groupBy('type');
 
-                    foreach($items as $item) {
-                        $group->route($item->title, $item->slug, function() use ($item, $type, $typeConfig) {
-                            return route($typeConfig['route'], $item->slug);
-                        });
-                    }
-                });
+                foreach ($elementRouteConfig['types'] as $type => $typeConfig) {
+                    $collection->group(trans("{$elementRouteConfig['types-translations']}.types.$type"), $type, function($group) use ($type, $typeConfig, $items) {
+                        foreach($items[$typeConfig['type']] as $item) {
+                            $group->route($item->title, $item->id, function() use ($item, $type, $typeConfig) {
+                                return route($typeConfig['route'], $item->slug); // route used in fronend
+                            });
+                        }
+                    });
+                }
             }
-
         });
-
-        // \Ignite\Crud\Fields\Route::register('app', function ($collection) {
-        //     \FjordPages\Models\FjordPage::collection('page')->get()->addToRouteCollection('Page', $collection);
-        // });
     }
 }
