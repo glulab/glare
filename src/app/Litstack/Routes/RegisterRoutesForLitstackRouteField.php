@@ -31,10 +31,12 @@ class RegisterRoutesForLitstackRouteField
 
                 foreach ($elementRouteConfig['types'] as $type => $typeConfig) {
                     $collection->group(trans("{$elementRouteConfig['types-translations']}.types.$type"), $type, function($group) use ($type, $typeConfig, $items) {
-                        foreach($items[$typeConfig['type']] as $item) {
-                            $group->route($item->title, $item->id, function() use ($item, $type, $typeConfig) {
-                                return route($typeConfig['route'], $item->slug); // route used in fronend
-                            });
+                        if (!empty($items[$typeConfig['type']])) {
+                            foreach($items[$typeConfig['type']] as $item) {
+                                $group->route($item->title, $item->id, function() use ($item, $type, $typeConfig) {
+                                    return route($typeConfig['route'], $item->slug); // route used in fronend
+                                });
+                            }
                         }
                     });
                 }
