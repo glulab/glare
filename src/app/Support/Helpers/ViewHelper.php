@@ -48,6 +48,12 @@ class ViewHelper {
         return $text;
     }
 
+    public function parseComponents($text, $model)
+    {
+        $text = \App::make(\Glare\Support\ViewParsers\ComponentsViewParser::class, ['model' => $model])->parse($text);
+        return $text;
+    }
+
     public function formatPage($text, $images, $nl2br = false)
     {
         $text = $this->parse($text);
@@ -56,12 +62,24 @@ class ViewHelper {
         return $this->format($text, $nl2br);
     }
 
+    public function formatModel($model, $nl2br = false, $fields = ['textField' => 'text', 'imagesField' => 'images'])
+    {
+        $text = $model->{$fields['textField']};
+        $images = $model->{$fields['imagesField']};
+
+        $text = $this->parse($text);
+        $text = $this->parseImages($text, $images);
+        $text = $this->parseComponents($text, $model);
+
+        return $this->format($text, $nl2br);
+    }
+
     public function splitToLines($object, $inputField = 'text', $outputField = 'lines', $splitter = '|')
     {
         if (empty($object)) {
-            return $object;    
+            return $object;
         }
-        
+
         if (!isset($object->$inputField)) {
             $object->lines = [];
         } else {
