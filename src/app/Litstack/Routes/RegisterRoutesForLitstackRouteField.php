@@ -15,7 +15,7 @@ class RegisterRoutesForLitstackRouteField
 
     public function run()
     {
-        $siteRoutes = config('site.litstack.site-routes');
+        $siteRoutes = (array) config('site.litstack.site-routes');
 
         \Ignite\Crud\Fields\Route::register('site-routes', function($collection) use ($siteRoutes) {
 
