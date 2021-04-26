@@ -145,11 +145,11 @@ class GlareServiceProvider extends ServiceProvider
         // $this->publishes([__DIR__ . '/../../publish/config' => base_path('config')], ['glare:site', 'glare:site:config']);
 
         // publishes translations from vendor/laravel-lang/lang
-        $this->publishes([base_path('vendor/laravel-lang/lang/src') => resource_path('lang')], 'glare:laravel-lang:all-langs');
-        $this->publishes([base_path('vendor/laravel-lang/lang/json') => resource_path('lang')],'glare:laravel-lang:all-langs');
+        // $this->publishes([base_path('vendor/laravel-lang/lang/src') => resource_path('lang')], 'glare:laravel-lang:all-langs');
+        // $this->publishes([base_path('vendor/laravel-lang/lang/json') => resource_path('lang')],'glare:laravel-lang:all-langs');
 
-        $this->publishes([base_path('vendor/laravel-lang/lang/src/pl') => resource_path('lang/pl')], 'glare:laravel-lang:pl');
-        $this->publishes([base_path('vendor/laravel-lang/lang/json/pl.json') => resource_path('lang/pl.json')],'glare:laravel-lang:pl');
+        // $this->publishes([base_path('vendor/laravel-lang/lang/src/pl') => resource_path('lang/pl')], 'glare:laravel-lang:pl');
+        // $this->publishes([base_path('vendor/laravel-lang/lang/json/pl.json') => resource_path('lang/pl.json')],'glare:laravel-lang:pl');
     }
 
     /**
