@@ -30,6 +30,10 @@ class RegisterRoutesForLitstackRouteField
                 $items = $items->groupBy('type');
 
                 foreach ($elementRouteConfig['types'] as $type => $typeConfig) {
+                    if (!$items->has($type)) {
+                        continue;
+                    }
+
                     $collection->group(trans("{$elementRouteConfig['types-translations']}.types.$type"), $type, function($group) use ($type, $typeConfig, $items) {
                         if (!empty($items[$typeConfig['type']])) {
                             foreach($items[$typeConfig['type']] as $item) {
