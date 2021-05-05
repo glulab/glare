@@ -2,7 +2,7 @@
 
 namespace Glare\Support\ViewParsers;
 
-class ComponentsViewParser
+class ComponentPhotoLinksViewParser
 {
     protected $model;
 
@@ -15,9 +15,8 @@ class ComponentsViewParser
     {
         $output = preg_replace_callback_array(
             [
-                // <p>[block]</p> => <div class="format-block">
                 '~<p>\[buttons\]<\/p>~i' => function ($match) {
-                    $out = $this->renderPhotoLinks();
+                    $out = $this->render();
                     return $out;
                 },
 
@@ -28,9 +27,12 @@ class ComponentsViewParser
         return $output;
     }
 
-    public function renderPhotoLinks()
+    public function render()
     {
-        return \App::make(\App\View\Components\Site\PhotoLinks::class, ['items' => $this->model->photo_links])->render();
+        if (class_exists(\App\View\Components\Site\PhotoLinks::class)) {
+            return \App::make(\App\View\Components\Site\PhotoLinks::class, ['items' => $this->model->photo_links])->render();
+        }
+        return '';
     }
 
 }

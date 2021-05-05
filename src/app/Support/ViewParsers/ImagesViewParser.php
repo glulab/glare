@@ -75,7 +75,7 @@ class ImagesViewParser
                     $title = !empty($img->title) ? $img->title : '';
 
                     // class
-                    $class = 'rounded mb-2';
+                    $class = '';
                     $class .= !empty($float) ? ' ' . $float : '';
                     $class .= !empty($width) ? ' image-w-' . $width : '';
 
@@ -85,7 +85,7 @@ class ImagesViewParser
                     $attr = array_replace($attr, !empty($title) ? ['title' => $img->title] : []);
                     $attr = array_replace($attr, ['class' => $class]);
 
-                    $out = $img($size)->attributes($attr)->lazy(); // $out = '<img class="rounded mb-2 image-w-'.$width.'" src="'. $img->getUrl($size) .'" alt="'.$img->alt.'">';
+                    $out = $img($size)->attributes($attr)->lazy(); // $out = '<img class=" image-w-'.$width.'" src="'. $img->getUrl($size) .'" alt="'.$img->alt.'">';
 
                     return $out;
                 },
@@ -98,7 +98,7 @@ class ImagesViewParser
                 //     if (is_null($img)) {
                 //         return '';
                 //     }
-                //     $out = $img($size)->attributes(['class' => 'rounded mb-2', 'alt' => $img->alt])->lazy(); // $out = '<img class="rounded mb-2" src="'. $img->getUrl($size) .'" alt="'.$img->alt.'">';
+                //     $out = $img($size)->attributes(['class' => '', 'alt' => $img->alt])->lazy(); // $out = '<img class="" src="'. $img->getUrl($size) .'" alt="'.$img->alt.'">';
                 //     return $out;
                 // },
             ],

@@ -26,6 +26,59 @@ class ImageBlocksViewParser
                 //     return $out;
                 // },
 
+                '~<([a-zA-Z0-9_.-]+)>\[images(\.(\d+))?\]<\/([a-zA-Z0-9_.-]+)>~i' => function ($match) use ($images) {
+
+                    $tagOpen = $match[1];
+                    $perLine = $match[3];
+                    $tagClose = $match[4];
+
+                    $count = !empty($images) ? count($images) : 0;
+
+                    if (empty($count)) {
+                        return '';
+                    }
+
+                    if (empty($perLine)) {
+                        $perLine = 4;
+                    }
+
+                    $out = '';
+                    $out .= '<'.$tagOpen.' class="images flex-wrap has-'.$perLine.'">';
+
+                    foreach ($images as $img) {
+
+                        // no image continue
+                        if (is_null($img)) {
+                            continue;
+                        }
+
+                        // size
+                        $size = '';
+
+                        // resolve alt
+                        $alt = !empty($alt) ? $alt : $img->alt;
+
+                        // resolve title
+                        $title = !empty($img->title) ? $img->title : '';
+
+                        // class
+                        $class = '';
+                        // $class .= !empty($float) ? ' ' . $float : '';
+                        // $class .= !empty($width) ? ' image-w-' . $width : '';
+
+                        // img attributes
+                        $attr = [];
+                        $attr = array_replace($attr, ['alt' => (string) $alt]);
+                        $attr = array_replace($attr, !empty($title) ? ['title' => $img->title] : []);
+                        $attr = array_replace($attr, ['class' => $class]);
+
+                        $out .= $img($size)->attributes($attr)->lazy();
+                    }
+                    $out .= '</'.$tagClose.'>';
+
+                    return $out;
+                },
+
                 // [IMAGES..{n}]
                 '~<([a-zA-Z0-9_.-]+)>\[ima?ge?s\.\.(\d+)\]~i' => function ($match) use ($images) {
                     $tag = $match[1];

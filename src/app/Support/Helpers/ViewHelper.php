@@ -42,7 +42,7 @@ class ViewHelper {
 
     public function parseImages($text, $images = null)
     {
-        $text = \App::make(\Glare\Support\ViewParsers\GalleryViewParser::class)->parse($text, $images);
+        $text = \App::make(\Glare\Support\ViewParsers\ImageGalleryViewParser::class)->parse($text, $images);
         $text = \App::make(\Glare\Support\ViewParsers\ImageBlocksViewParser::class)->parse($text, $images);
         $text = \App::make(\Glare\Support\ViewParsers\ImagesViewParser::class)->parse($text, $images);
         return $text;
@@ -50,7 +50,8 @@ class ViewHelper {
 
     public function parseComponents($text, $model)
     {
-        $text = \App::make(\Glare\Support\ViewParsers\ComponentsViewParser::class, ['model' => $model])->parse($text);
+        $text = \App::make(\Glare\Support\ViewParsers\ComponentPhotoLinksViewParser::class, ['model' => $model])->parse($text);
+        $text = \App::make(\Glare\Support\ViewParsers\ComponentGalleriesViewParser::class, ['model' => $model])->parse($text);
         return $text;
     }
 
