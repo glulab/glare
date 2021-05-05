@@ -17,7 +17,8 @@ class Menu
     public function href($item, $defaultLang = null)
     {
         try {
-            $link = Locator::url(!empty($item->url) ? $item->url : $item->route->trimmed() ?? '', $item->lang ?? $defaultLang);
+            // $link = Locator::url(!empty($item->url) ? $item->url : $item->route->trimmed() ?? '', $item->lang ?? $defaultLang);
+            $link = Locator::url(!empty($item->url) ? $item->url : $item->route ?? '', $item->lang ?? $defaultLang);
         } catch(\Throwable $e) {
             $link = '/';
         }
