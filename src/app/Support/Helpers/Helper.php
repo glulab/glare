@@ -24,4 +24,13 @@ class Helper {
 
         return str_replace($suffix, '', $str);
     }
+
+    public function attributesToString($attrs = [])
+    {
+        if (empty($attrs)) {
+            return '';
+        }
+
+        return str_replace('=', '="', http_build_query($attrs ?? [], null, '" ')).'"';
+    }
 }
