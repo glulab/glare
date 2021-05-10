@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 class Glare
 {
-    // const SERVICE_BLOG = 'blog';
-    // const SERVICE_CATALOG = 'catalog';
-    // const SERVICE_GALLERY = 'gallery';
-    // const SERVICE_OFFER_CONTROLLER = 'offer_controller';
-    // const SERVICE_OFFER_PAGE = 'offer_page';
+    // const SERVICE_SERVICENAME = 'servicename';
 
     public static $services = [];
 
