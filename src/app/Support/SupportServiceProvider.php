@@ -66,6 +66,11 @@ class SupportServiceProvider extends ServiceProvider
         $loader = AliasLoader::getInstance();
 
         foreach ($this->aliases as $alias => $class) {
+            // load alias from App namespace if class exists
+            $classInAppNamespace = str_replace(['Facades\Glare', 'Glare'], 'App', $class);
+            if (class_exists($classInAppNamespace)) {
+                $class = str_replace('Glare', 'App', $class);
+            }
             $loader->alias($alias, $class);
         }
     }
