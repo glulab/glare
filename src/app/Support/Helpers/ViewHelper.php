@@ -4,27 +4,53 @@ namespace Glare\Support\Helpers;
 
 class ViewHelper {
 
-    public function format($str, $nl2br = true)
+    public function formatText($text, $nl2br = true)
     {
-        $str = str_replace(' ,', ',', $str);
-        $str = str_replace(' .', '.', $str);
-        $str = str_replace(' !', '!', $str);
-        $str = str_replace(['( ', ' )'], ['(', ')'], $str);
-        $str = str_replace(
+        $text = $this->parse($text);
+        return $this->format($text, $nl2br);
+    }
+
+    public function formatPage($text, $images, $nl2br = false)
+    {
+        $text = $this->parse($text);
+        $text = $this->parseImages($text, $images);
+
+        return $this->format($text, $nl2br);
+    }
+
+    public function formatModel($model, $nl2br = false, $fields = ['textField' => 'text', 'imagesField' => 'images'])
+    {
+        $text = $model->{$fields['textField']};
+        $images = $model->{$fields['imagesField']};
+
+        $text = $this->parse($text);
+        $text = $this->parseImages($text, $images);
+        $text = $this->parseComponents($text, $model);
+
+        return $this->format($text, $nl2br);
+    }
+
+    public function format($text, $nl2br = true)
+    {
+        $text = str_replace(' ,', ',', $text);
+        $text = str_replace(' .', '.', $text);
+        $text = str_replace(' !', '!', $text);
+        $text = str_replace(['( ', ' )'], ['(', ')'], $text);
+        $text = str_replace(
             [
                 ' a ', ' i ', ' o ', ' u ', ' w ', ' z ',
             ],
             [
                 ' a&nbsp;', ' i&nbsp;', ' o&nbsp;', ' u&nbsp;', ' w&nbsp;', ' z&nbsp;',
             ],
-            $str
+            $text
         );
 
         if ($nl2br) {
-            $str = nl2br($str);
+            $text = nl2br($text);
         }
 
-        return $str;
+        return $text;
     }
 
     public function parse($text)
@@ -53,26 +79,6 @@ class ViewHelper {
         $text = \App::make(\Glare\Support\ViewParsers\ComponentPhotoLinksViewParser::class, ['model' => $model])->parse($text);
         $text = \App::make(\Glare\Support\ViewParsers\ComponentGalleriesViewParser::class, ['model' => $model])->parse($text);
         return $text;
-    }
-
-    public function formatPage($text, $images, $nl2br = false)
-    {
-        $text = $this->parse($text);
-        $text = $this->parseImages($text, $images);
-
-        return $this->format($text, $nl2br);
-    }
-
-    public function formatModel($model, $nl2br = false, $fields = ['textField' => 'text', 'imagesField' => 'images'])
-    {
-        $text = $model->{$fields['textField']};
-        $images = $model->{$fields['imagesField']};
-
-        $text = $this->parse($text);
-        $text = $this->parseImages($text, $images);
-        $text = $this->parseComponents($text, $model);
-
-        return $this->format($text, $nl2br);
     }
 
     public function splitToLines($object, $inputField = 'text', $outputField = 'lines', $splitter = '|')
