@@ -28,17 +28,17 @@ class Glare
      *
      * @return [type] [description]
      */
-    public function routes()
+    public function routes($suffixes = [])
     {
         \Illuminate\Support\Facades\Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-        \Illuminate\Support\Facades\Route::prefix(\Locator::langPrefix())->group(function () {
-            try {
-                include base_path('routes/web-context.php');
-                include base_path('routes/web-site.php');
-            } catch (\Exception $e) {
-                dump('no route files');
+        \Illuminate\Support\Facades\Route::prefix(\Locator::langPrefix())->group(function () use ($suffixes) {
+
+            foreach ($suffixes as $suffix) {
+                $routeFilePath = base_path('routes/web-'.$suffix.'.php');
+                require_once $routeFilePath;
             }
+
         });
     }
 
