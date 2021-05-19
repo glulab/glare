@@ -195,7 +195,8 @@ class GlareServiceProvider extends ServiceProvider
     public function doLoadTranslations()
     {
         $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'glare');
-        $this->loadJsonTranslationsFrom(resource_path('lang-default'));
+        $this->loadJsonTranslationsFrom(resource_path('langs/site'));
+        $this->loadJsonTranslationsFrom(resource_path('langs/theme'));
     }
 
     /**
