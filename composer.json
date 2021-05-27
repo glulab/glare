@@ -14,12 +14,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Glare\\": "../../../glare/app/"
+            "Glare\\": ["../../../glare/app/", "src/app/"]
         }
     },
     "extra": {
         "laravel": {
             "providers": [
+                "Glare\\Providers\\GlareBasicServiceProvider",
                 "Glare\\Providers\\GlareServiceProvider"
             ]
         }
