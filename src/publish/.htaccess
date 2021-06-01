@@ -1,0 +1,31 @@
+php_value max_input_vars 10000
+php_value memory_limit 512M
+php_value pcre.backtrack_limit 5000000
+
+<IfModule mod_rewrite.c>
+    # Rewrite www.domain.com -> domain.com -- used with SEO Strict URLs plugin
+    RewriteCond %{HTTP_HOST} .
+    RewriteCond %{HTTP_HOST} ^www.(.*)$ [NC]
+    RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+    #
+    # or for the opposite domain.com -> www.domain.com use the following
+    # DO NOT USE BOTH
+    #
+    #RewriteCond %{HTTP_HOST} !^$
+    #RewriteCond %{HTTP_HOST} !^www\. [NC]
+    #RewriteCond %{HTTP_HOST} (.+)$
+    #RewriteRule ^(.*)$ http://www.%1/$1 [R=301,L] .
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    # Redirect Trailing Slashes If Not A Folder...
+    #RewriteCond %{REQUEST_FILENAME} !-d
+    #RewriteCond %{REQUEST_URI} (.+)/$
+    #RewriteRule ^ %1 [L,R=301]
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    RewriteRule    ^$    public/    [L]
+    RewriteRule    (.*) public/$1    [L]
+</IfModule>

@@ -253,8 +253,10 @@ class GlareBasicServiceProvider extends ServiceProvider
 
         $this->publishes([__DIR__ . '/../../config/glare.php' => config_path('glare.php')], 'glare:config');
 
-        // $this->publishes([__DIR__ . '/../../publish/.htaccess' => base_path('.htaccess')], 'glare:base');
-        // $this->publishes([__DIR__ . '/../../publish/.user.ini' => base_path('.user.ini')], 'glare:base');
+        $this->publishes([__DIR__ . '/../../publish/.htaccess' => base_path('.htaccess')], 'glare:base');
+        $this->publishes([__DIR__ . '/../../publish/.user.ini' => base_path('.user.ini')], 'glare:base');
+        $this->publishes([__DIR__ . '/../../publish/webpack.mix.js' => base_path('webpack.mix.js')], 'glare:base');
+
         // $this->publishes([__DIR__ . '/../../publish/dev.artisan.txt' => base_path('dev.artisan.txt')], 'glare:base');
         // $this->publishes([__DIR__ . '/../../publish/dev.env.local.txt' => base_path('dev.env.local.txt')], 'glare:base');
         // $this->publishes([__DIR__ . '/../../publish/dev.env.origin.txt' => base_path('dev.env.origin.txt')], 'glare:base');
