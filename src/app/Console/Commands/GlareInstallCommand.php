@@ -33,6 +33,7 @@ class GlareInstallCommand extends Command
         parent::__construct();
 
         $this->gitignoreFilePath = base_path('.gitignore');
+        $this->packageJsonFilePath = base_path('package.json');
     }
 
     /**
@@ -49,6 +50,7 @@ class GlareInstallCommand extends Command
         $force = $this->option('force');
 
         $this->cleanGitignore();
+        $this->npmInstall();
     }
 
     public function cleanGitignore()
@@ -65,5 +67,23 @@ class GlareInstallCommand extends Command
             $file = array_slice($file, 0, $sliceKey);
         }
         file_put_contents($this->gitignoreFilePath, implode('', $file));
+    }
+
+    public function npmInstall()
+    {
+        $this->info('NPM INSTALL');
+        $this->info(config('glare.npm-install'));
+    }
+
+    public function getJsonFile($path)
+    {
+        $jsonFile = file_get_contents($path);
+        return json_decode($jsonFile);
+    }
+
+    public function putJsonFile($path, $data)
+    {
+        $jsonEncoded = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        return file_put_contents($path, $jsonEncoded);
     }
 }
