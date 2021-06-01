@@ -191,9 +191,11 @@ class GlareBasicServiceProvider extends ServiceProvider
      */
     public function doLoadCommands()
     {
-        // if ($this->app->runningInConsole()) {
-        //     $this->commands((array) config('site.commands-in-console'));
-        // }
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Glare\Console\Commands\GlareSwitchCommand::class,
+            ]);
+        }
 
         // $this->commands((array) config('site.commands'));
     }
