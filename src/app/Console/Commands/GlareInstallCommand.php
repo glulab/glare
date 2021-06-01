@@ -32,6 +32,7 @@ class GlareInstallCommand extends Command
     {
         parent::__construct();
 
+        $this->publishPath = __DIR__ . '/../../../publish';
         $this->gitignoreFilePath = base_path('.gitignore');
         $this->packageJsonFilePath = base_path('package.json');
     }
@@ -49,14 +50,37 @@ class GlareInstallCommand extends Command
 
         $force = $this->option('force');
 
-        $this->cleanGitignore();
+        // $this->cleanGitignore();
+        $this->appendToGitignore();
         $this->npmInstall();
+    }
+
+    public function appendToGitignore()
+    {
+        $this->cleanGitignore();
+
+        $marker = config('glare.custom-content-marker');
+        $comment = '# ' . $marker . ' added by glare ' . $marker;
+
+        try {
+            $appendFileContent = file_get_contents($this->publishPath . '/.gitignore');
+        } catch (\Exception $e) {
+            $appendFileContent = '';
+        }
+
+        if (empty($appendFileContent)) {
+            return false;
+        }
+
+        $fileContent = file_get_contents($this->gitignoreFilePath);
+        $fileContent .= $comment . PHP_EOL . $appendFileContent. PHP_EOL;
+        file_put_contents($this->gitignoreFilePath, $fileContent);
     }
 
     public function cleanGitignore()
     {
         $sliceKey = null;
-        $deleteMarker = config('glare.delete-marker');
+        $deleteMarker = config('glare.custom-content-marker');
         $file = file($this->gitignoreFilePath);
         foreach ($file as $key => $line) {
             if (strpos($line, $deleteMarker) !== false) {

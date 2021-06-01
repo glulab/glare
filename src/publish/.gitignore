@@ -1,0 +1,14 @@
+
+*.bak
+*.log
+/public/css
+/public/js
+/public/fonts/
+/public/images/
+/public/mix-manifest.json
+
+/storage/media-library
+/public/_devtools.php
+
+/public/google*.html
+/public/*sitemap*.xml
