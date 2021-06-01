@@ -8,4 +8,5 @@ return [
         'url' => 'D:/www/dev/packages/glulab/glare',
         'suffix' => '|dev-master',
     ],
+    'delete-marker' => '~~~',
 ];

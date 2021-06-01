@@ -193,6 +193,7 @@ class GlareBasicServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
+                \Glare\Console\Commands\GlareInstallCommand::class,
                 \Glare\Console\Commands\GlareSwitchCommand::class,
             ]);
         }
