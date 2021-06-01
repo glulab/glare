@@ -28,6 +28,7 @@ class GlareSwitchCommand extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->robotsFilePath = public_path('robots.txt');
         $this->composerFilePath = base_path('composer.json');
     }
 
@@ -45,13 +46,36 @@ class GlareSwitchCommand extends Command
         $mode = $this->argument('mode');
         $force = $this->option('force');
 
-        $method = 'mode';
-        if (!method_exists($this, $method)) {
-            $this->info('There is no method: ' . $method . '!');
-            return false;
-        }
-        $res = call_user_func_array([$this, $method], ['mode' => $mode]);
+        // $method = 'mode';
+        // if (!method_exists($this, $method)) {
+        //     $this->info('There is no method: ' . $method . '!');
+        //     return false;
+        // }
+        // $res = call_user_func_array([$this, $method], ['mode' => $mode]);
+
+        $res = '';
+
+        $res .= $this->switchRobots($mode);
+        $res .= $this->switchComposer($mode);
+
         $this->info($res);
+    }
+
+    public function switchRobots($mode)
+    {
+        $lines = [];
+        $lines[0] = 'User-agent: *';
+        $lines[1] = 'Disallow:';
+        $lines[2] = '';
+        $lines[3] = 'Sitemap: ' . config('app.url') . '/sitemap.xml';
+        $lines[4] = '';
+        $lines[5] = '';
+
+        if ($mode === 'dev' || $mode === 'vcs') {
+            $lines[1] = 'Disallow: /';
+        }
+
+        file_put_contents($this->robotsFilePath, implode(PHP_EOL, $lines));
     }
 
     public function getComposerFile()
@@ -67,7 +91,7 @@ class GlareSwitchCommand extends Command
         return file_put_contents($this->composerFilePath, $this->composerFileJson);
     }
 
-    public function mode($mode = null)
+    public function switchComposer($mode)
     {
         // dev prod vcs
 
