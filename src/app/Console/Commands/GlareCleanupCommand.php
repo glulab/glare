@@ -60,6 +60,7 @@ class GlareCleanupCommand extends Command
             'sessionClear' => [],
             'emptyStorageDir' => [['media-library/temp']],
             'cachedFacadesClear' => [],
+            'deleteFromBasePath' => ['pattern' => '{.[!.],}*.bak'], // deletes .gitignore and .env .bak copies
         ];
 
         $compileCommands = [
@@ -149,6 +150,15 @@ class GlareCleanupCommand extends Command
     public function cachedFacadesClear()
     {
         $files = glob(storage_path('framework/cache') . '/facade-*');
+        foreach ($files as $file) {
+            @unlink($file);
+        }
+        return true;
+    }
+
+    public function deleteFromBasePath($pattern)
+    {
+        $files = glob(base_path() . '/' . $pattern, GLOB_BRACE);
         foreach ($files as $file) {
             @unlink($file);
         }
