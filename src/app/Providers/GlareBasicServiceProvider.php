@@ -179,9 +179,9 @@ class GlareBasicServiceProvider extends ServiceProvider
     public function doLoadViews()
     {
         // $this->loadViewsFrom(__DIR__.'/../../resources/views', 'glare');
-        foreach ((array) config('site.resources.views') as $path => $namespace) {
-            $this->loadViewsFrom(base_path($path), $namespace);
-        }
+        // foreach ((array) config('site.resources.views') as $path => $namespace) {
+        //     $this->loadViewsFrom(base_path($path), $namespace);
+        // }
     }
 
     /**
