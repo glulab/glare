@@ -14,7 +14,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Glare\\": ["../../../glare/app/", "src/app/"]
+            "Glare\\": ["../../../glare/app/", "src/app/"],
+            "Glare\\Vendor\\": "../../../glare/vendor/"
         }
     },
     "extra": {
